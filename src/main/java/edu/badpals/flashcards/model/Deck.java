@@ -1,19 +1,59 @@
 package edu.badpals.flashcards.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
 
-import java.util.List;
+import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Deck {
+
+@Entity
+@Table(name = "decks")
+public class Deck implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private User owner;
+
+    @Column(name = "name")
     private String name;
-    private List<Word> words;
+
+    @ManyToOne
+    private User owner;
+
+    //private List<Word> words;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Deck{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", owner=").append(owner);
+        sb.append('}');
+        return sb.toString();
+    }
 }
