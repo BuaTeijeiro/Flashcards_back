@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,15 +8,82 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Table(name = "substitution_rules")
 public class SubstitutionRule {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
     private Phrase phrase;
-    private Word word;
+
+    @Column
+    private String word;
+
+    @ManyToMany
     private List<Tag> tags;
+
+    @ManyToOne
     private Category category;
-    private String inflection;
+
+    @ManyToOne
+    private Inflection inflection;
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Phrase getPhrase() {
+        return phrase;
+    }
+
+    public void setPhrase(Phrase phrase) {
+        this.phrase = phrase;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Inflection getInflection() {
+        return inflection;
+    }
+
+    public void setInflection(Inflection inflection) {
+        this.inflection = inflection;
+    }
 }

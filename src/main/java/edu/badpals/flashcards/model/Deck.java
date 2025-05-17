@@ -3,6 +3,7 @@ package edu.badpals.flashcards.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -16,9 +17,10 @@ public class Deck implements Serializable {
     private String name;
 
     @ManyToOne
-    private User owner;
+    private Teacher owner;
 
-    //private List<Word> words;
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    private List<Word> words;
 
     public long getId() {
         return id;
@@ -36,16 +38,21 @@ public class Deck implements Serializable {
         this.name = name;
     }
 
-    public User getOwner() {
+    public Teacher getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(Teacher owner) {
         this.owner = owner;
     }
 
+    public List<Word> getWords() {
+        return words;
+    }
 
-
+    public void setWords(List<Word> words) {
+        this.words = words;
+    }
 
     @Override
     public String toString() {

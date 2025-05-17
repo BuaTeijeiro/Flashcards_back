@@ -17,11 +17,24 @@ public class DeckService {
     @Autowired
     private UserService userService;
 
+    public Deck save(Deck deck){
+        return deckRepository.save(deck);
+    }
+
     public List<Deck> getDecksUser(Long id){
         Optional<User> user = userService.findUserById(id);
         if (user.isPresent())
             return deckRepository.findByOwner(user.get());
         else
             return null;
+    }
+
+    public Deck getDeck(Long id){
+        Optional<Deck> deck = deckRepository.findById(id);
+        if (deck.isPresent()){
+            return deck.get();
+        } else {
+            return null;
+        }
     }
 }

@@ -18,7 +18,12 @@ public class DeckController {
 
     @GetMapping("/all/{id}")
     public List<Deck> getDecks(@PathVariable Long id) {
-        List<Deck> decks = deckService.getDecksUser(id);
-        return decks;
+        return deckService.getDecksUser(id);
+    }
+
+    @GetMapping("/data/{id}")
+    public Deck getDeck(@PathVariable Long id) {
+        Deck deck = deckService.getDeck(id);
+        return deckService.getDeck(id);
     }
 }
