@@ -41,11 +41,12 @@ public class PhraseService {
     private List<String> substituteAll(Phrase phrase, SubstitutionRule substitutionRule){
         List<String> phrases = new ArrayList<>();
         String text = phrase.getPhrase();
+        String targetWord = substitutionRule.getWord();
         Inflection inflection = substitutionRule.getInflection();
         List<Word> words = wordService.findAllByDeck(phrase.getDeck());
         for (Word word: words){
             String inflectedWord = wordService.inflect(word, inflection);
-            phrases.add(substitute(text, "pusa", inflectedWord));
+            phrases.add(substitute(text, targetWord, inflectedWord));
         }
 
         return phrases;

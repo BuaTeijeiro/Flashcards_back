@@ -13,4 +13,5 @@ public class InflectionController {
 
     @Autowired
     private InflectionService inflectionService;
+
 }

@@ -3,6 +3,8 @@ package edu.badpals.flashcards.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "words")
@@ -28,6 +30,14 @@ public class Word {
     @ManyToOne
     @JsonIgnore
     private Pattern pattern;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "words_tags",
+            joinColumns = @JoinColumn(name = "word_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 
     public long getId() {
         return id;

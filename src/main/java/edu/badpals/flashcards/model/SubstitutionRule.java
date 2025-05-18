@@ -23,6 +23,11 @@ public class SubstitutionRule {
     private String word;
 
     @ManyToMany
+    @JoinTable(
+            name = "rules_tags",
+            joinColumns = @JoinColumn(name = "rule_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
     private List<Tag> tags;
 
     @ManyToOne
@@ -35,9 +40,6 @@ public class SubstitutionRule {
     public int hashCode() {
         return super.hashCode();
     }
-
-
-
 
     public long getId() {
         return id;
