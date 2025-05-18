@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.service;
 
+import edu.badpals.flashcards.dto.WordDto;
 import edu.badpals.flashcards.model.*;
 import edu.badpals.flashcards.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,27 @@ public class WordService {
     private WordRepository repository;
     @Autowired
     private DeckService deckService;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private PatternService patternService;
 
-    public Word save(Word word){
-        return repository.save(word);
+    public Word save(WordDto wordDto){
+        Word word = new Word();
+
+        Deck deck = deckService.findById(wordDto.getDeckId());
+        Category category = categoryService.findById(wordDto.getCategoryId());
+        Pattern pattern = patternService.findById(wordDto.getPatternId());
+        if (deck != null && category!= null && pattern!= null){
+            word.setMeaning(wordDto.getMeaning());
+            word.setWord(wordDto.getWord());
+            word.setDeck(deck);
+            word.setCategory(category);
+            word.setPattern(pattern);
+            return repository.save(word);
+        } else
+            return null;
+
     }
 
     public void delete(Word word){
@@ -45,7 +64,7 @@ public class WordService {
 
     public String inflect(Word word, Inflection inflection){
         if (word.getPattern().getInflections().contains(inflection)){
-            InflectionMode mode = inflection.getMode();
+            InflectionMode mode = inflection.getMode() != null ? inflection.getMode(): InflectionMode.NONE;
             String pattern = word.getPattern().getPattern();
             String inflectedWord = null;
             if (mode.equals(InflectionMode.START_APPEND)){
@@ -56,6 +75,8 @@ public class WordService {
                 inflectedWord = inflection.getAffix() + word.getWord().substring(word.getWord().indexOf(pattern));
             } else if (mode.equals(InflectionMode.END_SUBSTITUTE)) {
                 inflectedWord = word.getWord().substring(0, word.getWord().indexOf(pattern)) + inflection.getAffix();
+            } else {
+                inflectedWord = word.getWord();
             }
             return inflectedWord;
         } else{

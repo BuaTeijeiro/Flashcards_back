@@ -1,6 +1,7 @@
 package edu.badpals.flashcards.service;
 
 import edu.badpals.flashcards.model.Category;
+import edu.badpals.flashcards.model.Inflection;
 import edu.badpals.flashcards.model.Pattern;
 import edu.badpals.flashcards.model.Teacher;
 import edu.badpals.flashcards.repository.PatternRepository;
@@ -14,9 +15,23 @@ public class PatternService {
 
     @Autowired
     private PatternRepository repository;
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private InflectionService inflectionService;
 
-    public Pattern save(Pattern pattern){
-        return repository.save(pattern);
+    public Pattern save(Pattern pattern, long id){
+        Category category = categoryService.findById(id);
+        if (category != null) {
+            pattern.setCategory(category);
+            Pattern newPattern = repository.save(pattern);
+            for (String inflection: category.getInflectionsNames()){
+                inflectionService.save(new Inflection(inflection, pattern));
+            }
+            return newPattern;
+        } else {
+            return null;
+        }
     }
 
     public void delete(Pattern pattern){

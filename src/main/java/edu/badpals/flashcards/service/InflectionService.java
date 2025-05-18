@@ -8,6 +8,8 @@ import edu.badpals.flashcards.repository.InflectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class InflectionService {
 
@@ -22,4 +24,13 @@ public class InflectionService {
         repository.delete(inflection);
     }
 
+    public Inflection update(long id, Inflection inflection) {
+        Optional<Inflection> inflectionOptional = repository.findById(id);
+        if (inflectionOptional.isPresent()){
+            Inflection oldInflection = inflectionOptional.get();
+            oldInflection.setMode(inflection.getMode());
+            oldInflection.setAffix(inflection.getAffix());
+            return repository.save(oldInflection);
+        } return null;
+    }
 }

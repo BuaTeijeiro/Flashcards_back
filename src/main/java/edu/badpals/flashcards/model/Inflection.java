@@ -17,7 +17,7 @@ public class Inflection implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "")
+    @Column(name = "inflection")
     private String inflection;
 
     @Column(name = "affix")
@@ -29,6 +29,15 @@ public class Inflection implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="mode")
     private InflectionMode mode;
+
+    public Inflection(){
+
+    }
+
+    public Inflection(String inflection, Pattern pattern) {
+        this.inflection = inflection;
+        this.pattern = pattern;
+    }
 
     public long getId() {
         return id;

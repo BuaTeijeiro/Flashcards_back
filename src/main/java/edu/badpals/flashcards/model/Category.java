@@ -75,4 +75,8 @@ public class Category implements Serializable {
     public void addInflectionName(String name){
         inflectionsNames.add(name);
     }
+
+    public void deleteInflectionName(String name){
+        inflectionsNames.remove(name);
+    }
 }

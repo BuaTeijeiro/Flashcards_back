@@ -5,6 +5,8 @@ import edu.badpals.flashcards.service.CategoryService;
 import edu.badpals.flashcards.service.TagService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,15 @@ public class TagController {
     }
 
     @PostMapping("/new/{id}")
-    public Tag addTag(@PathVariable long id, @RequestParam Tag tag){
-        return tagService.save(tag, id);
+    public ResponseEntity<Tag> addTag(@PathVariable long id, @RequestBody Tag tag){
+        return ResponseEntity.status(HttpStatus.CREATED).body(tagService.save(tag,id));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Tag> deleteTag(@PathVariable long id){
+        if (tagService.delete(id))
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

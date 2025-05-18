@@ -2,12 +2,9 @@ package edu.badpals.flashcards.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,6 +15,9 @@ public class Pattern implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name="name")
+    private String name;
+
     @Column(name="pattern")
     private String pattern;
 
@@ -26,7 +26,15 @@ public class Pattern implements Serializable {
     private Category category;
 
     @OneToMany(mappedBy = "pattern", fetch = FetchType.EAGER)
-    private List<Inflection> inflections;
+    private List<Inflection> inflections =  new ArrayList<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public long getId() {
         return id;
@@ -58,5 +66,13 @@ public class Pattern implements Serializable {
 
     public void setInflections(List<Inflection> inflections) {
         this.inflections = inflections;
+    }
+
+    public void addInflection(Inflection inflection){
+        getInflections().add(inflection);
+    }
+
+    public void removeInflection(Inflection inflection){
+        getInflections().remove(inflection);
     }
 }

@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.controller;
 
+import edu.badpals.flashcards.dto.WordDto;
 import edu.badpals.flashcards.model.Word;
 import edu.badpals.flashcards.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ public class WordController {
     @Autowired
     private WordService wordService;
 
-    @PostMapping("/new")
-    public Word save(@RequestBody Word word){
+    @PostMapping("/new/")
+    public Word save(@RequestBody WordDto word){
         return wordService.save(word);
     }
 

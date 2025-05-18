@@ -4,10 +4,9 @@ import edu.badpals.flashcards.model.Category;
 import edu.badpals.flashcards.model.Tag;
 import edu.badpals.flashcards.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +25,33 @@ public class CategoryController {
     @GetMapping("/detail/{id}")
     public Category findById(@PathVariable long id){
         return categoryService.findById(id);
+    }
+
+    @PostMapping("/new/{id}")
+    public ResponseEntity<Category> addCategory(@PathVariable long id, @RequestBody Category category){
+        Category newCategory = categoryService.save(category,id);
+        if (newCategory != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PutMapping("/newInflection/{id}")
+    public ResponseEntity<Category> addInflection(@PathVariable long id, @RequestParam String newInflection){
+        Category category = categoryService.addInflection(id, newInflection);
+        if (category != null)
+            return ResponseEntity.status(HttpStatus.OK).body(category);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/deleteInflection/{id}")
+    public ResponseEntity<Category> deleteInflection(@PathVariable long id, @RequestParam String deleteInflection){
+        Category category = categoryService.deleteInflection(id, deleteInflection);
+        if (category != null)
+            return ResponseEntity.status(HttpStatus.OK).body(category);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
 

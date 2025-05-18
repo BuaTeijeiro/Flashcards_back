@@ -6,6 +6,7 @@ import edu.badpals.flashcards.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +39,14 @@ public class TagService {
         }
     }
 
-    public void delete(Tag tag){
-        repository.delete(tag);
+    public boolean delete(long id){
+        Optional<Tag> tagOptional = repository.findById(id);
+        if (tagOptional.isPresent()) {
+            repository.delete(tagOptional.get());
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
