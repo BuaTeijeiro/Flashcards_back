@@ -6,11 +6,17 @@ import edu.badpals.flashcards.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TeacherService {
 
     @Autowired
     private TeacherRepository repository;
+
+    public Optional<Teacher> findById(long id){
+        return repository.findById(id);
+    }
 
     public Teacher save(Teacher teacher){
         return repository.save(teacher);

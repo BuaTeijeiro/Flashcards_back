@@ -24,11 +24,9 @@ public class Word {
     private String meaning;
 
     @ManyToOne
-    @JsonIgnore
     private Category category;
 
     @ManyToOne
-    @JsonIgnore
     private Pattern pattern;
 
     @ManyToMany(fetch = FetchType.EAGER)

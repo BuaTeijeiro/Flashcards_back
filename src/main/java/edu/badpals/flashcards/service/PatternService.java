@@ -7,6 +7,8 @@ import edu.badpals.flashcards.repository.PatternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PatternService {
 
@@ -21,4 +23,8 @@ public class PatternService {
         repository.delete(pattern);
     }
 
+    public Pattern findById(long id) {
+        Optional<Pattern> categoryOptional = repository.findById(id);
+        return categoryOptional.isPresent()? categoryOptional.get() : null;
+    }
 }

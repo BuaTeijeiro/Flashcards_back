@@ -20,7 +20,7 @@ public class WordController {
         return wordService.save(word);
     }
 
-    @GetMapping("/data/{id}")
+    @GetMapping("/detail/{id}")
     public Word getById(@PathVariable Long id){
         Word word = wordService.findById(id).get();
         return word;

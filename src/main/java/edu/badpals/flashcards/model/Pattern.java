@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,8 @@ public class Pattern implements Serializable {
     @Column(name="pattern")
     private String pattern;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Category category;
 
     @OneToMany(mappedBy = "pattern", fetch = FetchType.EAGER)

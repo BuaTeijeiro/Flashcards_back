@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -16,19 +17,28 @@ public class Category implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "inflectionNames",
             joinColumns = @JoinColumn(name = "category_id")
     )
-    @Column(name = "phone_number")
+    @Column(name = "inflection_name")
     private List<String> inflectionsNames;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private List<Pattern> patterns;
 
     @ManyToOne
+    @JsonIgnore
     private Teacher owner;
+
+    public Teacher getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Teacher teacher) {
+        this.owner = teacher;
+    }
 
     public long getId() {
         return id;

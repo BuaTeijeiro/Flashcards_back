@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class Tag {
     private String tag;
 
     @ManyToOne
+    @JsonIgnore
     private Teacher teacher;
 
     public long getId() {

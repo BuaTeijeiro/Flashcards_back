@@ -56,4 +56,9 @@ public class PhraseService {
     public List<String> substituteAll(Long id, Long idRule){
         return substituteAll(getById(id).get(), substitutionRuleService.findById(idRule).get());
     }
+
+    public Phrase findById(Long id) {
+        Optional<Phrase> phraseOptional= repository.findById(id);
+        return phraseOptional.isPresent()? phraseOptional.get():null;
+    }
 }

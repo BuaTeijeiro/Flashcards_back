@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +18,13 @@ public class Phrase implements Serializable {
     private long id;
 
     @ManyToOne
+    @JsonIgnore
     private Deck deck;
 
     @Column(name = "phrase")
     private String phrase;
 
-    @OneToMany(mappedBy = "phrase")
+    @OneToMany(mappedBy = "phrase", fetch = FetchType.EAGER)
     private List<SubstitutionRule> substitutionRules;
 
     public long getId() {

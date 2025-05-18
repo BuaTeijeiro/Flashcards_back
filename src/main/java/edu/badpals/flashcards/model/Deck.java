@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,11 +17,15 @@ public class Deck implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Teacher owner;
 
     @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
     private List<Word> words;
+
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    private List<Phrase> phrases;
 
     public long getId() {
         return id;
@@ -52,6 +57,14 @@ public class Deck implements Serializable {
 
     public void setWords(List<Word> words) {
         this.words = words;
+    }
+
+    public List<Phrase> getPhrases() {
+        return phrases;
+    }
+
+    public void setPhrases(List<Phrase> phrases) {
+        this.phrases = phrases;
     }
 
     @Override
