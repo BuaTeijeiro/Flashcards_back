@@ -18,6 +18,10 @@ public class TeacherService {
         return repository.findById(id);
     }
 
+    public Optional<Teacher> findByEmail(String email){
+        return repository.findByEmail(email);
+    }
+
     public Teacher save(Teacher teacher){
         return repository.save(teacher);
     }

@@ -23,6 +23,9 @@ public class Word {
     @Column(name = "meaning")
     private String meaning;
 
+    @Column(name="level")
+    private int level;
+
     @ManyToOne
     private Category category;
 
@@ -83,6 +86,14 @@ public class Word {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     //    public Category getCategory(){

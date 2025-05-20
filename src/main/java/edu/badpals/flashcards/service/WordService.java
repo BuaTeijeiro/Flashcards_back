@@ -27,14 +27,19 @@ public class WordService {
         Word word = new Word();
 
         Deck deck = deckService.findById(wordDto.getDeckId());
-        Category category = categoryService.findById(wordDto.getCategoryId());
-        Pattern pattern = patternService.findById(wordDto.getPatternId());
-        if (deck != null && category!= null && pattern!= null){
+
+        if (deck != null ){
             word.setMeaning(wordDto.getMeaning());
             word.setWord(wordDto.getWord());
             word.setDeck(deck);
-            word.setCategory(category);
-            word.setPattern(pattern);
+            Category category = categoryService.findById(wordDto.getCategoryId());
+            if (category!= null){
+                word.setCategory(category);
+                Pattern pattern = patternService.findById(wordDto.getPatternId());
+                if (pattern != null){
+                    word.setPattern(pattern);
+                }
+            }
             return repository.save(word);
         } else
             return null;

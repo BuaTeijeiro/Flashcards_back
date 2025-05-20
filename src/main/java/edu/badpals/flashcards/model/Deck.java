@@ -27,6 +27,10 @@ public class Deck implements Serializable {
     @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
     private List<Phrase> phrases;
 
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<DeckUser> users;
+
     public long getId() {
         return id;
     }
@@ -65,6 +69,22 @@ public class Deck implements Serializable {
 
     public void setPhrases(List<Phrase> phrases) {
         this.phrases = phrases;
+    }
+
+    public List<DeckUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<DeckUser> user) {
+        this.users = user;
+    }
+
+    public void addUser(DeckUser user){
+        getUsers().add(user);
+    }
+
+    public void removeUser(DeckUser user){
+        getUsers().remove(user);
     }
 
     @Override
