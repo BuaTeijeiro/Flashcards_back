@@ -1,8 +1,10 @@
 package edu.badpals.flashcards.dto;
 
 public class WordDto {
+    private long id;
     private String word;
     private String meaning;
+    private int level;
     private long categoryId;
     private long patternId;
     private long deckId;
@@ -45,5 +47,21 @@ public class WordDto {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

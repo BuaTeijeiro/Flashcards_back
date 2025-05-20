@@ -25,7 +25,7 @@ public class Pattern implements Serializable {
     @JsonIgnore
     private Category category;
 
-    @OneToMany(mappedBy = "pattern", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pattern", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Inflection> inflections =  new ArrayList<>();
 
     public String getName() {

@@ -32,6 +32,7 @@ public class WordService {
             word.setMeaning(wordDto.getMeaning());
             word.setWord(wordDto.getWord());
             word.setDeck(deck);
+            word.setLevel(wordDto.getLevel());
             Category category = categoryService.findById(wordDto.getCategoryId());
             if (category!= null){
                 word.setCategory(category);
@@ -46,8 +47,36 @@ public class WordService {
 
     }
 
-    public void delete(Word word){
-        repository.delete(word);
+    public Word update(WordDto word) {
+        Optional<Word> wordOptional = repository.findById(word.getId());
+        if (wordOptional.isPresent()){
+            Word oldWord = wordOptional.get();
+            oldWord.setWord(word.getWord());
+            oldWord.setMeaning(word.getMeaning());
+            oldWord.setLevel(word.getLevel());
+            Category category = categoryService.findById(word.getCategoryId());
+            if (category!= null){
+                oldWord.setCategory(category);
+                Pattern pattern = patternService.findById(word.getPatternId());
+                if (pattern != null){
+                    oldWord.setPattern(pattern);
+                }
+            }
+            return repository.save(oldWord);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean delete(WordDto word){
+        Optional<Word> wordOptional = repository.findById(word.getId());
+        if (wordOptional.isPresent()){
+            repository.delete(wordOptional.get());
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public Optional<Word> findById(Long id){
@@ -98,12 +127,18 @@ public class WordService {
             Word word = optionalWord.get();
 
             Map<String, String> inflections = new HashMap<>();
-            for (Inflection inflection : word.getPattern().getInflections()) {
-                inflections.put(inflection.getInflection(), inflect(word, inflection));
+
+            if (word.getPattern()!= null) {
+
+                for (Inflection inflection : word.getPattern().getInflections()) {
+                    inflections.put(inflection.getInflection(), inflect(word, inflection));
+                }
             }
             return inflections;
         } else {
             return null;
         }
     }
+
+
 }

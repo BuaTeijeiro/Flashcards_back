@@ -29,4 +29,22 @@ public class PatternController {
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Pattern> addCategory(@RequestBody Pattern pattern){
+        Pattern updatedPattern = patternService.update(pattern);
+        if (updatedPattern != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedPattern);
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Pattern> deleteCategory(@RequestBody Pattern pattern){
+        if (patternService.delete(pattern)){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }

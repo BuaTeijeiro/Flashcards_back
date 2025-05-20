@@ -56,7 +56,7 @@ public class DeckUser {
         return level;
     }
 
-    public void setLeve(int leve) {
-        this.level = leve;
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

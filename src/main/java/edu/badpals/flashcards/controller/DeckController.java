@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.controller;
 
+import edu.badpals.flashcards.dto.DeckDto;
 import edu.badpals.flashcards.dto.DeckUserDto;
 import edu.badpals.flashcards.model.Deck;
 import edu.badpals.flashcards.model.DeckUser;
@@ -28,6 +29,26 @@ public class DeckController {
         return deckService.getDeck(id);
     }
 
+    @PostMapping("/new")
+    public ResponseEntity<Deck> newDeck(@RequestBody DeckDto deckDto){
+        Deck deck = deckService.save(deckDto);
+        if (deck != null){
+            return ResponseEntity.status(HttpStatus.OK).body(deck);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Deck> updateDeck(@RequestBody DeckDto deckDto){
+        Deck deck = deckService.update(deckDto);
+        if (deck != null){
+            return ResponseEntity.status(HttpStatus.OK).body(deck);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
     @GetMapping("/users/{id}")
     public ResponseEntity<List<DeckUser>> getUsersDeck(@PathVariable long id){
         List<DeckUser> users = deckService.getDeckUsers(id);
@@ -49,4 +70,25 @@ public class DeckController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @PutMapping("/users/update")
+    public ResponseEntity<DeckUser> updateUser(@RequestBody DeckUserDto user){
+        DeckUser deckUser = deckService.updateUser(user);
+        if (deckUser != null){
+            return ResponseEntity.ok(deckUser);
+        } else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/users/remove")
+    public ResponseEntity<DeckUser> removeUserFromDeck(@RequestBody DeckUserDto user){
+        if (deckService.removeUser(user)){
+            return ResponseEntity.ok().build();
+        } else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
 }

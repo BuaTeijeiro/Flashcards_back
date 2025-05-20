@@ -17,6 +17,9 @@ public class Deck implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "language")
+    private String language;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Teacher owner;
@@ -77,6 +80,14 @@ public class Deck implements Serializable {
 
     public void setUsers(List<DeckUser> user) {
         this.users = user;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public void addUser(DeckUser user){

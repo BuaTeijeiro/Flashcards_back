@@ -1,24 +1,24 @@
 package edu.badpals.flashcards.dto;
 
 public class DeckUserDto {
-    private String UserEmail;
-    private long DeckId;
+    private String userEmail;
+    private long deckId;
     private int level;
 
     public String getUserEmail() {
-        return UserEmail;
+        return userEmail;
     }
 
     public void setUserEmail(String userEmail) {
-        UserEmail = userEmail;
+        this.userEmail = userEmail;
     }
 
     public long getDeckId() {
-        return DeckId;
+        return deckId;
     }
 
     public void setDeckId(long deckId) {
-        DeckId = deckId;
+        this.deckId = deckId;
     }
 
     public int getLevel() {

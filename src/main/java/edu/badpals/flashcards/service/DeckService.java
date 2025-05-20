@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.service;
 
+import edu.badpals.flashcards.dto.DeckDto;
 import edu.badpals.flashcards.dto.DeckUserDto;
 import edu.badpals.flashcards.model.Deck;
 import edu.badpals.flashcards.model.DeckUser;
@@ -27,6 +28,31 @@ public class DeckService {
 
     public Deck save(Deck deck){
         return repository.save(deck);
+    }
+
+    public Deck save(DeckDto deckDto) {
+        Optional<Teacher> user = teacherService.findById(deckDto.getOwner());
+        if (user.isPresent()) {
+            Deck deck = new Deck();
+            deck.setOwner(user.get());
+            deck.setName(deckDto.getName());
+            deck.setLanguage(deckDto.getLanguage());
+            return save(deck);
+        }
+        else
+            return null;
+    }
+
+    public Deck update(DeckDto deckDto) {
+        Optional<Deck> user = repository.findById(deckDto.getId());
+        if (user.isPresent()) {
+            Deck deck = new Deck();
+            deck.setName(deckDto.getName());
+            deck.setLanguage(deckDto.getLanguage());
+            return save(deck);
+        }
+        else
+            return null;
     }
 
     public List<Deck> getDecksUser(Long id){
@@ -57,10 +83,38 @@ public class DeckService {
             Deck deck = deckOptional.get();
             User userNew = userService.findByEmail(user.getUserEmail());
             if (userNew != null){
-                return  deckUserRepository.save(new DeckUser(deck,userNew, 1));
+                return  deckUserRepository.save(new DeckUser(deck,userNew, user.getLevel()));
             }
         }
         return null;
+    }
+
+    public boolean removeUser(DeckUserDto user) {
+        Optional<DeckUser> deckUser = findDeckUser(user);
+        if (deckUser.isPresent()){
+            deckUserRepository.delete(deckUser.get());
+            return true;
+        }
+        return false;
+    }
+
+    public DeckUser updateUser(DeckUserDto user) {
+        Optional<DeckUser> deckUserOptional = findDeckUser(user);
+        if (deckUserOptional.isPresent()){
+            DeckUser deckUser = deckUserOptional.get();
+            deckUser.setLevel(user.getLevel());
+            return deckUserRepository.save(deckUser);
+        }
+        return null;
+    }
+
+    private Optional<DeckUser> findDeckUser(DeckUserDto user) {
+        Optional<Deck> deckOptional = repository.findById(user.getDeckId());
+        User userNew = userService.findByEmail(user.getUserEmail());
+        if (deckOptional.isPresent() && userNew != null) {
+            return deckUserRepository.findByDeckAndUser(deckOptional.get(), userNew);
+        }
+        return Optional.empty();
     }
 
     public List<DeckUser> getDeckUsers(long id) {
@@ -70,4 +124,7 @@ public class DeckService {
         }
         return null;
     }
+
+
+
 }

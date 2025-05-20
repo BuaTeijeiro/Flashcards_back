@@ -1,6 +1,7 @@
 package edu.badpals.flashcards.controller;
 
 import edu.badpals.flashcards.model.Category;
+import edu.badpals.flashcards.model.Pattern;
 import edu.badpals.flashcards.model.Tag;
 import edu.badpals.flashcards.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,15 @@ public class CategoryController {
         return categoryService.findAllByTeacher(id);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Category> deleteCategory(@RequestBody Category category){
+        if (categoryService.delete(category)){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
     @GetMapping("/detail/{id}")
     public Category findById(@PathVariable long id){
         return categoryService.findById(id);
@@ -32,6 +42,15 @@ public class CategoryController {
         Category newCategory = categoryService.save(category,id);
         if (newCategory != null)
             return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Category> addCategory(@RequestBody Category category){
+        Category updatedCategory = categoryService.update(category);
+        if (updatedCategory != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(updatedCategory);
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }

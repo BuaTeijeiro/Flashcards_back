@@ -31,8 +31,23 @@ public class CategoryService {
         }
     }
 
-    public void delete(Category category){
-        repository.delete(category);
+    public Category update(Category category) {
+        Category oldCategory = findById(category.getId());
+        if (oldCategory != null){
+            oldCategory.setName(category.getName());
+            oldCategory.setLanguage(category.getLanguage());
+            return repository.save(oldCategory);
+        } else
+            return null;
+    }
+
+    public boolean delete(Category category){
+        Optional<Category> categoryOptional = repository.findById(category.getId());
+        if (categoryOptional.isPresent()){
+            repository.delete(categoryOptional.get());
+            return true;
+        }
+        return false;
     }
 
     public void getCategoriesTeacher(Teacher teacher){

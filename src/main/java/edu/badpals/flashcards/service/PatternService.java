@@ -34,12 +34,29 @@ public class PatternService {
         }
     }
 
-    public void delete(Pattern pattern){
-        repository.delete(pattern);
+    public Pattern update(Pattern pattern) {
+        Pattern oldPattern = findById(pattern.getId());
+        if (oldPattern != null){
+            oldPattern.setName(pattern.getName());
+            oldPattern.setPattern(pattern.getPattern());
+            return repository.save(oldPattern);
+        } else
+            return null;
+    }
+
+    public boolean delete(Pattern pattern){
+        Optional<Pattern> patternOptional = repository.findById(pattern.getId());
+        if (patternOptional.isPresent()){
+            repository.delete(patternOptional.get());
+            return true;
+        }
+        return false;
     }
 
     public Pattern findById(long id) {
         Optional<Pattern> categoryOptional = repository.findById(id);
         return categoryOptional.isPresent()? categoryOptional.get() : null;
     }
+
+
 }

@@ -17,6 +17,9 @@ public class Category implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "language")
+    private String language;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "inflectionNames",
@@ -25,7 +28,7 @@ public class Category implements Serializable {
     @Column(name = "inflection_name")
     private List<String> inflectionsNames;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER,  cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Pattern> patterns;
 
     @ManyToOne
@@ -70,6 +73,14 @@ public class Category implements Serializable {
 
     public void setPatterns(List<Pattern> patterns) {
         this.patterns = patterns;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public void addInflectionName(String name){
