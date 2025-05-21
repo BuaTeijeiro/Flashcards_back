@@ -75,4 +75,13 @@ public class Pattern implements Serializable {
     public void removeInflection(Inflection inflection){
         getInflections().remove(inflection);
     }
+
+    public Inflection getInflectionByName(String inflectionName) {
+        for (Inflection inflection: getInflections()){
+            if (inflection.getInflection().equals(inflectionName)){
+                return inflection;
+            }
+        }
+        return null;
+    }
 }

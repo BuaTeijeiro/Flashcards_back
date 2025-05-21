@@ -24,6 +24,12 @@ public class Phrase implements Serializable {
     @Column(name = "phrase")
     private String phrase;
 
+    @Column(name = "level")
+    private int level;
+
+    @Column(name = "meaning")
+    private String meaning;
+
     @OneToMany(mappedBy = "phrase", fetch = FetchType.EAGER)
     private List<SubstitutionRule> substitutionRules;
 
@@ -51,11 +57,35 @@ public class Phrase implements Serializable {
         this.phrase = phrase;
     }
 
+    public String getMeaning() {
+        return meaning;
+    }
+
+    public void setMeaning(String meaning) {
+        this.meaning = meaning;
+    }
+
     public List<SubstitutionRule> getSubstitutionRules() {
         return substitutionRules;
     }
 
     public void setSubstitutionRules(List<SubstitutionRule> substitutionRules) {
         this.substitutionRules = substitutionRules;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void addSubstitutionRule(SubstitutionRule substitutionRule){
+        getSubstitutionRules().add(substitutionRule);
+    }
+
+    public void removeSubstitutionRule(SubstitutionRule substitutionRule){
+        getSubstitutionRules().remove(substitutionRule);
     }
 }

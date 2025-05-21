@@ -35,8 +35,8 @@ public class SubstitutionRule {
     @ManyToOne
     private Category category;
 
-    @ManyToOne
-    private Inflection inflection;
+    @Column(name = "inflection_name")
+    private String inflectionName;
 
     @Override
     public int hashCode() {
@@ -83,11 +83,11 @@ public class SubstitutionRule {
         this.category = category;
     }
 
-    public Inflection getInflection() {
-        return inflection;
+    public String getInflectionName() {
+        return inflectionName;
     }
 
-    public void setInflection(Inflection inflection) {
-        this.inflection = inflection;
+    public void setInflectionName(String inflectionName) {
+        this.inflectionName = inflectionName;
     }
 }

@@ -1,6 +1,9 @@
 package edu.badpals.flashcards.controller;
 
+import edu.badpals.flashcards.dto.TagDto;
+import edu.badpals.flashcards.dto.WordDto;
 import edu.badpals.flashcards.model.Tag;
+import edu.badpals.flashcards.model.Word;
 import edu.badpals.flashcards.service.CategoryService;
 import edu.badpals.flashcards.service.TagService;
 import jakarta.websocket.server.PathParam;
@@ -22,14 +25,29 @@ public class TagController {
         return tagService.findAllByTeacher(id);
     }
 
-    @PostMapping("/new/{id}")
-    public ResponseEntity<Tag> addTag(@PathVariable long id, @RequestBody Tag tag){
-        return ResponseEntity.status(HttpStatus.CREATED).body(tagService.save(tag,id));
+    @PostMapping("/new")
+    public ResponseEntity<Tag> addTag(@RequestBody TagDto tag){
+        Tag newTag = tagService.save(tag);
+        if (newTag != null){
+            return ResponseEntity.status(HttpStatus.OK).body(newTag);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Tag> deleteTag(@PathVariable long id){
-        if (tagService.delete(id))
+    @PutMapping("/update")
+    public ResponseEntity<Tag> updateWord(@RequestBody TagDto tagDto){
+        Tag updatedTag = tagService.update(tagDto);
+        if (updatedTag != null){
+            return ResponseEntity.status(HttpStatus.OK).body(updatedTag);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Tag> deleteTag(@RequestBody TagDto tagDto){
+        if (tagService.delete(tagDto))
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

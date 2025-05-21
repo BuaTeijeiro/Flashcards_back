@@ -1,5 +1,6 @@
 package edu.badpals.flashcards.service;
 
+import edu.badpals.flashcards.dto.TagDto;
 import edu.badpals.flashcards.model.Tag;
 import edu.badpals.flashcards.model.Teacher;
 import edu.badpals.flashcards.repository.TagRepository;
@@ -29,18 +30,31 @@ public class TagService {
             return null;
     }
 
-    public Tag save(Tag tag, long id){
-        Optional<Teacher> teacherOptional = teacherService.findById(id);
+    public Tag save(TagDto tagDto){
+        Optional<Teacher> teacherOptional = teacherService.findById(tagDto.getOwnerId());
         if (teacherOptional.isPresent()) {
+            Tag tag = new Tag();
             tag.setTeacher(teacherOptional.get());
+            tag.setTag(tagDto.getTag());
             return repository.save(tag);
         } else {
             return null;
         }
     }
 
-    public boolean delete(long id){
-        Optional<Tag> tagOptional = repository.findById(id);
+    public Tag update(TagDto tagDto) {
+        Optional<Tag> tagOptional = repository.findById(tagDto.getId());
+        if (tagOptional.isPresent()) {
+            Tag oldTag = tagOptional.get();
+            oldTag.setTag(tagDto.getTag());
+            return repository.save(oldTag);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean delete(TagDto tagDto){
+        Optional<Tag> tagOptional = repository.findById(tagDto.getId());
         if (tagOptional.isPresent()) {
             repository.delete(tagOptional.get());
             return true;
@@ -49,4 +63,6 @@ public class TagService {
         }
 
     }
+
+
 }
