@@ -12,4 +12,5 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     List<Word> findAllByDeck(Deck deck);
     List<Word> findAllByDeckAndTags(Deck deck, Tag tag);
     List<Word> findAllByDeckIdAndCategoryId(long deckId, long categoryId);
+    List<Word> findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(long deckId, long categoryId, int leve);
 }

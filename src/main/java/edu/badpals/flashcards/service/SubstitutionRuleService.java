@@ -71,22 +71,24 @@ public class SubstitutionRuleService {
         return phrase.replaceFirst(oldWord, newWord);
     }
 
-    private List<String> substituteAll(Phrase phrase, SubstitutionRule substitutionRule){
+    private List<String> substituteAll(Phrase phrase, SubstitutionRule substitutionRule, int level){
         List<String> phrases = new ArrayList<>();
         String text = phrase.getPhrase();
         String targetWord = substitutionRule.getWord();
-        Category category = substitutionRule.getCategory();
-        List<Word> words = wordService.findAllByDeckAndCategory(phrase.getDeck(), substitutionRule.getCategory());
-
+        List<Word> words;
+        if (level == -1) {
+            words = wordService.findAllByDeckAndCategory(phrase.getDeck(), substitutionRule.getCategory());
+        } else {
+            words = wordService.findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(phrase.getDeck(), substitutionRule.getCategory(), level);
+        }
         for (Word word: words){
             Inflection inflection = word.getPattern().getInflectionByName(substitutionRule.getInflectionName());
             String inflectedWord = wordService.inflect(word, inflection);
             phrases.add(substitute(text, targetWord, inflectedWord));
         }
-
         return phrases;
-
     }
+
 
     public List<String> substituteAll(Long id){
         Optional<Phrase> phraseOptional = phraseService.getById(id);
@@ -94,7 +96,20 @@ public class SubstitutionRuleService {
         if (phraseOptional.isPresent()){
             Phrase phrase = phraseOptional.get();
             for (SubstitutionRule rule : phrase.getSubstitutionRules()){
-                phrases.addAll(substituteAll(phrase, rule));
+                phrases.addAll(substituteAll(phrase, rule, -1));
+            }
+
+        }
+        return phrases;
+    }
+
+    public List<String> substituteByLevel(Long id, int level){
+        Optional<Phrase> phraseOptional = phraseService.getById(id);
+        List<String> phrases = new ArrayList<>();
+        if (phraseOptional.isPresent()){
+            Phrase phrase = phraseOptional.get();
+            for (SubstitutionRule rule : phrase.getSubstitutionRules()){
+                phrases.addAll(substituteAll(phrase, rule, level));
             }
 
         }

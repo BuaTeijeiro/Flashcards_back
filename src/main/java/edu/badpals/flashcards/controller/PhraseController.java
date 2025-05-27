@@ -24,8 +24,13 @@ public class PhraseController {
 
 
     @GetMapping("/detail/{id}")
-    public Phrase getById(@PathVariable Long id){
-        return phraseService.findById(id);
+    public ResponseEntity<Phrase> getById(@PathVariable Long id){
+        Phrase newPhrase = phraseService.findById(id);
+        if (newPhrase != null){
+            return ResponseEntity.status(HttpStatus.OK).body(newPhrase);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
 

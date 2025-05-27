@@ -1,8 +1,10 @@
 package edu.badpals.flashcards.service;
 
 
+import edu.badpals.flashcards.dto.DeckForStudyDto;
+import edu.badpals.flashcards.dto.DeckSummaryDto;
+import edu.badpals.flashcards.model.Deck;
 import edu.badpals.flashcards.model.DeckUser;
-import edu.badpals.flashcards.model.Teacher;
 import edu.badpals.flashcards.model.User;
 import edu.badpals.flashcards.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +53,17 @@ public class UserService {
         }
     }
 
-    public List<Map<String,String>> getDecksData(long id) {
+    public List<DeckSummaryDto> getDecksData(long id) {
         Optional<User> userOptional = repository.findById(id);
         if (userOptional.isPresent()){
-            List<Map<String,String>> decksData = new ArrayList<>();
+            List<DeckSummaryDto> decksData = new ArrayList<>();
             List<DeckUser> decks =  userOptional.get().getDecks();
             for (DeckUser deck : decks){
-                Map<String, String> data = new HashMap<>();
-                data.put("name", deck.getDeck().getName());
-                data.put("words", String.valueOf(deck.getDeck().getWords().stream().filter(o -> o.getLevel() <= deck.getLevel()).toList().size()) );
+                DeckSummaryDto data = new DeckSummaryDto();
+                data.setId(deck.getDeck().getId());
+                data.setName(deck.getDeck().getName());
+                data.setWordsCount(deck.getDeck().getWords().stream().filter(o -> o.getLevel() <= deck.getLevel()).toList().size());
+                data.setPhrasesCount(deck.getDeck().getPhrases().stream().filter(o -> o.getLevel() <= deck.getLevel()).toList().size());
                 decksData.add(data);
             }
             return decksData;
@@ -67,4 +71,27 @@ public class UserService {
             return null;
         }
     }
+
+    public DeckForStudyDto getDecksAccordingToLevel(long id, long deckId) {
+        Optional<User> userOptional = repository.findById(id);
+        if (userOptional.isPresent()){
+            List<DeckUser> decks =  userOptional.get().getDecks();
+            for (DeckUser deck : decks){
+                if (deck.getDeck().getId() == deckId) {
+                    Deck deckForUser = deck.getDeck();
+                    DeckForStudyDto deckForStudyDto = new DeckForStudyDto();
+                    deckForStudyDto.setId(deckForUser.getId());
+                    deckForStudyDto.setLevel(deck.getLevel());
+                    deckForStudyDto.setName(deckForUser.getName());
+                    deckForStudyDto.setWords(deckForUser.getWords().stream().filter(o -> o.getLevel() <= deck.getLevel()).toList());
+                    deckForStudyDto.setPhrases(deckForUser.getPhrases().stream().filter(o -> o.getLevel() <= deck.getLevel()).toList());
+                    return deckForStudyDto;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
 }

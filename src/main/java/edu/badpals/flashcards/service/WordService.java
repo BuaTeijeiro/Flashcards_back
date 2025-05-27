@@ -100,6 +100,10 @@ public class WordService {
         return repository.findAllByDeckIdAndCategoryId(deck.getId(), category.getId());
     }
 
+    public List<Word> findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(Deck deck, Category category, int level){
+        return repository.findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(deck.getId(), category.getId(), level);
+    }
+
     public String inflect(Word word, Inflection inflection){
         if (word.getPattern().getInflections().contains(inflection)){
             InflectionMode mode = inflection.getMode() != null ? inflection.getMode(): InflectionMode.NONE;

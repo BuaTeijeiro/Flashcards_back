@@ -10,10 +10,6 @@ import java.util.List;
 @DiscriminatorValue(value="1")
 public class Teacher extends User{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @OneToMany(mappedBy = "owner")
     @JsonIgnore
     private List<Deck> ownedDecks;

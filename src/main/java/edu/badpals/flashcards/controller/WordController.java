@@ -49,7 +49,12 @@ public class WordController {
     }
 
     @GetMapping("/full-inflected/{id}")
-    public Map<String, String> inflectWord(@PathVariable Long id){
-        return wordService.fullyInflect(id);
+    public ResponseEntity<Map<String, String>> inflectWord(@PathVariable Long id){
+        Map<String, String> inflections = wordService.fullyInflect(id);
+        if (inflections == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(inflections);
+        }
     }
 }
