@@ -44,9 +44,9 @@ public class DeckService {
     }
 
     public Deck update(DeckDto deckDto) {
-        Optional<Deck> user = repository.findById(deckDto.getId());
-        if (user.isPresent()) {
-            Deck deck = new Deck();
+        Optional<Deck> deckOptional = repository.findById(deckDto.getId());
+        if (deckOptional.isPresent()) {
+            Deck deck = deckOptional.get();
             deck.setName(deckDto.getName());
             deck.setLanguage(deckDto.getLanguage());
             return save(deck);

@@ -5,7 +5,10 @@ import edu.badpals.flashcards.model.Inflection;
 import edu.badpals.flashcards.model.Pattern;
 import edu.badpals.flashcards.model.Teacher;
 import edu.badpals.flashcards.repository.CategoryRepository;
+import edu.badpals.flashcards.repository.InflectionRepository;
+import edu.badpals.flashcards.repository.PatternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +23,11 @@ public class CategoryService {
     private TeacherService teacherService;
     @Autowired
     private InflectionService inflectionService;
+    @Autowired
+    private PatternRepository patternRepository;
+    @Autowired
+    private InflectionRepository inflectionRepository;
+
 
     public Category save(Category category, long id){
         Optional<Teacher> teacherOptional = teacherService.findById(id);
@@ -62,6 +70,14 @@ public class CategoryService {
             return null;
     }
 
+    public List<Category> findAllByTeacherAndLanguage(long id, String language) {
+        Optional<Teacher> teacherOptional = teacherService.findById(id);
+        if (teacherOptional.isPresent())
+            return repository.findAllByOwnerAndLanguage(teacherOptional.get(), language);
+        else
+            return null;
+    }
+
     public Category findById(long id) {
         Optional<Category> categoryOptional = repository.findById(id);
         return categoryOptional.isPresent()? categoryOptional.get() : null;
@@ -87,10 +103,17 @@ public class CategoryService {
             Category category = categoryOptional.get();
             category.deleteInflectionName(name);
             for (Pattern pattern : category.getPatterns()){
+                for (Inflection inflection : pattern.getInflections()){
+                    if (inflection.getInflection().equals(name)){
+                        inflectionRepository.delete(inflection);
+                    }
+                }
             }
             return repository.save(category);
         } else {
             return null;
         }
     }
+
+
 }

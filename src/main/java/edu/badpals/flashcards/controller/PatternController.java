@@ -2,6 +2,7 @@ package edu.badpals.flashcards.controller;
 
 import edu.badpals.flashcards.model.Category;
 import edu.badpals.flashcards.model.Pattern;
+import edu.badpals.flashcards.model.Phrase;
 import edu.badpals.flashcards.service.CategoryService;
 import edu.badpals.flashcards.service.PatternService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,13 @@ public class PatternController {
     private PatternService patternService;
 
     @GetMapping("/detail/{id}")
-    public Pattern findById(@PathVariable long id){
-        return patternService.findById(id);
+    public ResponseEntity<Pattern> findById(@PathVariable long id){
+        Pattern patternData = patternService.findById(id);
+        if (patternData != null){
+            return ResponseEntity.status(HttpStatus.OK).body(patternData);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PostMapping("/new/{id}")

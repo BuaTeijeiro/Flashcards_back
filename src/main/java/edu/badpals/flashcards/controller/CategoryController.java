@@ -19,8 +19,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/all/{id}")
-    public List<Category> findAllByTeacher(@PathVariable long id){
-        return categoryService.findAllByTeacher(id);
+    public List<Category> findAllByTeacher(@PathVariable long id, @RequestParam String language){
+        return categoryService.findAllByTeacherAndLanguage(id, language);
     }
 
     @DeleteMapping("/delete")
