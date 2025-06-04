@@ -24,13 +24,13 @@ public class Deck implements Serializable {
     @JsonIgnore
     private Teacher owner;
 
-    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Word> words;
 
-    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Phrase> phrases;
 
-    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<DeckUser> users;
 

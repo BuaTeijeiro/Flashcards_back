@@ -65,4 +65,12 @@ public class TagService {
     }
 
 
+    public Tag findById(long tagId) {
+        Optional<Tag> tagOptional = repository.findById(tagId);
+        if (tagOptional.isPresent()) {
+            return tagOptional.get();
+        } else {
+            return null;
+        }
+    }
 }

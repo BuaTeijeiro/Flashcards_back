@@ -2,10 +2,7 @@ package edu.badpals.flashcards.service;
 
 import edu.badpals.flashcards.dto.DeckDto;
 import edu.badpals.flashcards.dto.DeckUserDto;
-import edu.badpals.flashcards.model.Deck;
-import edu.badpals.flashcards.model.DeckUser;
-import edu.badpals.flashcards.model.Teacher;
-import edu.badpals.flashcards.model.User;
+import edu.badpals.flashcards.model.*;
 import edu.badpals.flashcards.repository.DeckRepository;
 import edu.badpals.flashcards.repository.DeckUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,5 +123,12 @@ public class DeckService {
     }
 
 
-
+    public boolean delete(Deck deck) {
+        Optional<Deck> deckOptional = repository.findById(deck.getId());
+        if (deckOptional.isPresent()){
+            repository.delete(deckOptional.get());
+            return true;
+        }
+        return false;
+    }
 }

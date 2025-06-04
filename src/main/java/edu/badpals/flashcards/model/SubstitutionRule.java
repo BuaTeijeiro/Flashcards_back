@@ -24,13 +24,8 @@ public class SubstitutionRule {
     @Column
     private String word;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "rules_tags",
-            joinColumns = @JoinColumn(name = "rule_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private List<Tag> tags;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Tag tag;
 
     @ManyToOne
     private Category category;
@@ -59,12 +54,12 @@ public class SubstitutionRule {
         this.phrase = phrase;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public Tag getTag() {
+        return tag;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public String getWord() {

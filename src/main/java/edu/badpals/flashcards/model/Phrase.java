@@ -30,7 +30,7 @@ public class Phrase implements Serializable {
     @Column(name = "meaning")
     private String meaning;
 
-    @OneToMany(mappedBy = "phrase", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "phrase", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<SubstitutionRule> substitutionRules;
 
     public long getId() {

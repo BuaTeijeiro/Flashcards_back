@@ -18,9 +18,14 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/all/{id}")
+    @GetMapping("/all-by-language/{id}")
     public List<Category> findAllByTeacher(@PathVariable long id, @RequestParam String language){
         return categoryService.findAllByTeacherAndLanguage(id, language);
+    }
+
+    @GetMapping("/all/{id}")
+    public List<Category> findAllByTeacher(@PathVariable long id){
+        return categoryService.findAllByTeacher(id);
     }
 
     @DeleteMapping("/delete")
@@ -33,8 +38,12 @@ public class CategoryController {
     }
 
     @GetMapping("/detail/{id}")
-    public Category findById(@PathVariable long id){
-        return categoryService.findById(id);
+    public ResponseEntity<Category> findById(@PathVariable long id){
+        Category category = categoryService.findById(id);
+        if (category != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(category);
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PostMapping("/new/{id}")

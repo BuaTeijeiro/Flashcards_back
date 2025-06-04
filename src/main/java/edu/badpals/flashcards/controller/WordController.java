@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/words/")
+@RequestMapping("/words")
 public class WordController {
 
     @Autowired

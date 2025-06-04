@@ -28,7 +28,7 @@ public class Category implements Serializable {
     @Column(name = "inflection_name")
     private List<String> inflectionsNames;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER,  cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER,  cascade = CascadeType.REMOVE)
     private List<Pattern> patterns;
 
     @ManyToOne

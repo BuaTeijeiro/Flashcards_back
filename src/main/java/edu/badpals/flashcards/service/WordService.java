@@ -22,6 +22,8 @@ public class WordService {
     private CategoryService categoryService;
     @Autowired
     private PatternService patternService;
+    @Autowired
+    private TagService tagService;
 
     public Word save(WordDto wordDto){
         Word word = new Word();
@@ -33,14 +35,9 @@ public class WordService {
             word.setWord(wordDto.getWord());
             word.setDeck(deck);
             word.setLevel(wordDto.getLevel());
-            Category category = categoryService.findById(wordDto.getCategoryId());
-            if (category!= null){
-                word.setCategory(category);
-                Pattern pattern = patternService.findById(wordDto.getPatternId());
-                if (pattern != null){
-                    word.setPattern(pattern);
-                }
-            }
+            word.setTag(tagService.findById(wordDto.getTagId()));
+            word.setCategory(categoryService.findById(wordDto.getCategoryId()));
+            word.setPattern(patternService.findById(wordDto.getPatternId()));
             return repository.save(word);
         } else
             return null;
@@ -54,14 +51,9 @@ public class WordService {
             oldWord.setWord(word.getWord());
             oldWord.setMeaning(word.getMeaning());
             oldWord.setLevel(word.getLevel());
-            Category category = categoryService.findById(word.getCategoryId());
-            if (category!= null){
-                oldWord.setCategory(category);
-                Pattern pattern = patternService.findById(word.getPatternId());
-                if (pattern != null){
-                    oldWord.setPattern(pattern);
-                }
-            }
+            oldWord.setTag(tagService.findById(word.getTagId()));
+            oldWord.setCategory(categoryService.findById(word.getCategoryId()));
+            oldWord.setPattern(patternService.findById(word.getPatternId()));
             return repository.save(oldWord);
         } else {
             return null;
@@ -102,6 +94,14 @@ public class WordService {
 
     public List<Word> findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(Deck deck, Category category, int level){
         return repository.findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(deck.getId(), category.getId(), level);
+    }
+
+    public List<Word> findAllByDeckIdAndCategoryIdAndTag(Deck deck, Category category, Tag tag) {
+        return repository.findAllByDeckIdAndCategoryIdAndTag(deck.getId(), category.getId(), tag);
+    }
+
+    public List<Word> findAllByDeckIdAndCategoryIdAndTagAndLevelLessThanEqual(Deck deck, Category category, Tag tag, int level) {
+        return repository.findAllByDeckIdAndCategoryIdAndTagAndLevelLessThanEqual(deck.getId(), category.getId(), tag, level);
     }
 
     public String inflect(Word word, Inflection inflection){
@@ -147,6 +147,7 @@ public class WordService {
             return null;
         }
     }
+
 
 
 }

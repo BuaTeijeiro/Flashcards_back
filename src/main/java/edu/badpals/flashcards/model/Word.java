@@ -32,13 +32,8 @@ public class Word {
     @ManyToOne
     private Pattern pattern;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "words_tags",
-            joinColumns = @JoinColumn(name = "word_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private List<Tag> tags;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Tag tag;
 
     public long getId() {
         return id;
@@ -96,7 +91,11 @@ public class Word {
         this.level = level;
     }
 
-    //    public Category getCategory(){
-//        return getPattern().getCategory();
-//    }
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
 }

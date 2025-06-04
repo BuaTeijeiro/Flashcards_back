@@ -8,6 +8,7 @@ public class WordDto {
     private long categoryId;
     private long patternId;
     private long deckId;
+    private long tagId;
 
     public long getDeckId() {
         return deckId;
@@ -63,5 +64,13 @@ public class WordDto {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public long getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(long tagId) {
+        this.tagId = tagId;
     }
 }

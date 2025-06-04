@@ -13,7 +13,7 @@ public class SubstitutionRuleDto {
     private long id;
     private long phraseId;
     private String word;
-    private List<String> tags;
+    private long tagId;
     private long categoryId;
     private String inflectionName;
 
@@ -41,12 +41,12 @@ public class SubstitutionRuleDto {
         this.word = word;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public long getTagId() {
+        return tagId;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setTagId(long tagId) {
+        this.tagId = tagId;
     }
 
     public long getCategoryId() {

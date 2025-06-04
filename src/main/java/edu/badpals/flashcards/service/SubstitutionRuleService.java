@@ -21,6 +21,8 @@ public class SubstitutionRuleService {
     private CategoryService categoryService;
     @Autowired
     private WordService wordService;
+    @Autowired
+    private TagService tagService;
     
 
     public Optional<SubstitutionRule> findById(Long id){
@@ -36,6 +38,7 @@ public class SubstitutionRuleService {
             substitutionRule.setWord(substitutionRuleDto.getWord());
             substitutionRule.setInflectionName(substitutionRuleDto.getInflectionName());
             substitutionRule.setCategory(category);
+            substitutionRule.setTag(tagService.findById(substitutionRuleDto.getTagId()));
             return repository.save(substitutionRule);
         } else {
             return null;
@@ -50,6 +53,7 @@ public class SubstitutionRuleService {
             substitutionRule.setWord(substitutionRuleDto.getWord());
             substitutionRule.setInflectionName(substitutionRule.getInflectionName());
             substitutionRule.setCategory(substitutionRule.getCategory());
+            substitutionRule.setTag(tagService.findById(substitutionRuleDto.getTagId()));
             return repository.save(substitutionRule);
         } else {
             return null;
@@ -73,17 +77,23 @@ public class SubstitutionRuleService {
 
     private List<String> substituteAll(Phrase phrase, SubstitutionRule substitutionRule, int level){
         List<String> phrases = new ArrayList<>();
-        String text = phrase.getPhrase();
-        String targetWord = substitutionRule.getWord();
+        String text = phrase.getPhrase().toLowerCase();
+        String targetWord = substitutionRule.getWord().toLowerCase();
+        Tag tag = substitutionRule.getTag();
         List<Word> words;
-        if (level == -1) {
+        if (level == -1 && tag == null) {
             words = wordService.findAllByDeckAndCategory(phrase.getDeck(), substitutionRule.getCategory());
-        } else {
+        } else if (level == -1) {
+            words = wordService.findAllByDeckIdAndCategoryIdAndTag(phrase.getDeck(), substitutionRule.getCategory(), tag);
+        } else if (tag == null) {
             words = wordService.findAllByDeckIdAndCategoryIdAndLevelLessThanEqual(phrase.getDeck(), substitutionRule.getCategory(), level);
+        } else {
+                words = wordService.findAllByDeckIdAndCategoryIdAndTagAndLevelLessThanEqual(phrase.getDeck(), substitutionRule.getCategory(), tag, level);
         }
+
         for (Word word: words){
             Inflection inflection = word.getPattern().getInflectionByName(substitutionRule.getInflectionName());
-            String inflectedWord = wordService.inflect(word, inflection);
+            String inflectedWord = wordService.inflect(word, inflection).toLowerCase();
             phrases.add(substitute(text, targetWord, inflectedWord));
         }
         return phrases;

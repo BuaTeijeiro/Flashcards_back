@@ -2,6 +2,7 @@ package edu.badpals.flashcards.controller;
 
 import edu.badpals.flashcards.dto.DeckDto;
 import edu.badpals.flashcards.dto.DeckUserDto;
+import edu.badpals.flashcards.model.Category;
 import edu.badpals.flashcards.model.Deck;
 import edu.badpals.flashcards.model.DeckUser;
 import edu.badpals.flashcards.service.DeckService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/decks/")
+@RequestMapping("/decks")
 public class DeckController {
     @Autowired
     private DeckService deckService;
@@ -27,6 +28,15 @@ public class DeckController {
     public Deck getDeck(@PathVariable Long id) {
         Deck deck = deckService.getDeck(id);
         return deckService.getDeck(id);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Category> deleteCategory(@RequestBody Deck deck){
+        if (deckService.delete(deck)){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PostMapping("/new")
