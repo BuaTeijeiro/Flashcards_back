@@ -32,6 +32,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @PostMapping("/register")
+    private ResponseEntity<User> register(@RequestBody User user){
+        User userAttempt = userService.register(user);
+        if (userAttempt != null){
+            return ResponseEntity.status(HttpStatus.OK).body(userAttempt);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
     @GetMapping("/{id}/decks")
     private ResponseEntity<List<DeckSummaryDto>> getDecks(@PathVariable long id){
         List<DeckSummaryDto> data = userService.getDecksData(id);

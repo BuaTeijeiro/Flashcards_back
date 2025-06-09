@@ -10,6 +10,8 @@ import edu.badpals.flashcards.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.PrivilegedExceptionAction;
+import java.sql.SQLException;
 import java.util.*;
 
 @Service
@@ -19,6 +21,8 @@ public class UserService {
     private UserRepository repository;
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private UserRepository userRepository;
 
     public Optional<User> findUserById(Long id){
         return repository.findById(id);
@@ -94,4 +98,11 @@ public class UserService {
         }
     }
 
+    public User register(User user) {
+        try{
+            return userRepository.save(user);
+        } catch (Exception e){
+            return null;
+        }
+    }
 }
