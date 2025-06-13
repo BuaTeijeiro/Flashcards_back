@@ -114,9 +114,9 @@ public class WordService {
             } else if (mode.equals(InflectionMode.END_APPEND)) {
                 inflectedWord =  word.getWord() + inflection.getAffix();
             } else if (mode.equals(InflectionMode.START_SUBSTITUTE)){
-                inflectedWord = inflection.getAffix() + word.getWord().substring(word.getWord().indexOf(pattern));
+                inflectedWord = inflection.getAffix() + word.getWord().substring(word.getWord().indexOf(pattern) + 1);
             } else if (mode.equals(InflectionMode.END_SUBSTITUTE)) {
-                inflectedWord = word.getWord().substring(0, word.getWord().indexOf(pattern)) + inflection.getAffix();
+                inflectedWord = word.getWord().substring(0, word.getWord().lastIndexOf(pattern)) + inflection.getAffix();
             } else {
                 inflectedWord = word.getWord();
             }
